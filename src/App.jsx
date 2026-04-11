@@ -3,9 +3,11 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import GymDetail from './pages/GymDetail';
+import MyBookings from './pages/MyBookings';
+import SubmitGym from './pages/SubmitGym';
 import useAuthStore from './stores/authStore';
 
-// Protected route wrapper
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return isAuthenticated ? children : <Navigate to="/login" />;
@@ -19,24 +21,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/* Future protected routes */}
-        <Route path="/gym/:id" element={<div>Gym Detail - Coming Soon</div>} />
-        <Route
-          path="/bookings"
-          element={
-            <ProtectedRoute>
-              <div>My Bookings - Coming Soon</div>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/submit-gym"
-          element={
-            <ProtectedRoute>
-              <div>Submit Gym - Coming Soon</div>
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/gym/:id" element={<GymDetail />} />
+        <Route path="/bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
+        <Route path="/submit-gym" element={<ProtectedRoute><SubmitGym /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
