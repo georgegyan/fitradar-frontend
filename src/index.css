@@ -36,3 +36,10 @@ button {
   margin: 0 auto;
   padding: 0 1rem;
 }
+
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+  border-radius: 12px;
+  z-index: 1;
+}
