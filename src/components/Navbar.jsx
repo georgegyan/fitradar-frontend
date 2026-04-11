@@ -3,20 +3,21 @@ import useAuthStore from '../stores/authStore';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuthStore();
+  const isGymOwner = user?.is_gym_owner === true;
 
   return (
     <nav style={styles.nav}>
       <div className="container" style={styles.container}>
         <Link to="/" style={styles.logo}>
-          FitRadar
+           FitRadar
         </Link>
         <div style={styles.links}>
-          <Link to="/gyms">Gyms</Link>
+          <Link to="/">Gyms</Link>
           {isAuthenticated ? (
             <>
               <Link to="/bookings">My Bookings</Link>
-              <Link to="/submit-gym">Submit Gym</Link>
-              <span style={styles.user}> {user?.username}</span>
+              {isGymOwner && <Link to="/submit-gym">Submit Gym</Link>}
+              <span style={styles.user}>👋 {user?.username}</span>
               <button onClick={logout} style={styles.logoutBtn}>Logout</button>
             </>
           ) : (
@@ -44,16 +45,19 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   logo: {
     fontSize: '1.5rem',
     fontWeight: 700,
     color: '#e63946',
+    textDecoration: 'none',
   },
   links: {
     display: 'flex',
     gap: '1.5rem',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   user: {
     fontWeight: 500,

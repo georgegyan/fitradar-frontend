@@ -10,6 +10,7 @@ export default function Register() {
     password2: '',
     first_name: '',
     last_name: '',
+    is_gym_owner: false,   // <-- added role field
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,15 @@ export default function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  };
+
+  const handleRoleChange = (value) => {
+    setFormData({ ...formData, is_gym_owner: value === 'owner' });
   };
 
   const handleSubmit = async (e) => {
@@ -41,7 +50,7 @@ export default function Register() {
     <div style={styles.container}>
       <div style={styles.card}>
         <h1 style={styles.title}>Create Account</h1>
-        <p style={styles.subtitle}>Join FitRadar to book gym sessions</p>
+        <p style={styles.subtitle}>Join FitRadar to book or list gyms</p>
         {errors.general && <div style={styles.error}>{errors.general}</div>}
         <form onSubmit={handleSubmit} style={styles.form}>
           <input
@@ -102,6 +111,34 @@ export default function Register() {
             style={styles.input}
           />
           {errors.password2 && <span style={styles.fieldError}>{errors.password2}</span>}
+          
+          {/* Role Selection */}
+          <div style={styles.roleGroup}>
+            <label style={styles.roleLabel}>I want to:</label>
+            <div style={styles.roleOptions}>
+              <label style={styles.roleOption}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="user"
+                  checked={!formData.is_gym_owner}
+                  onChange={() => handleRoleChange('user')}
+                />
+                <span>Book gym sessions (Normal User)</span>
+              </label>
+              <label style={styles.roleOption}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="owner"
+                  checked={formData.is_gym_owner}
+                  onChange={() => handleRoleChange('owner')}
+                />
+                <span>List and manage my gym (Gym Owner)</span>
+              </label>
+            </div>
+          </div>
+
           <button type="submit" disabled={loading} style={styles.button}>
             {loading ? 'Creating account...' : 'Register'}
           </button>
@@ -155,6 +192,15 @@ const styles = {
     fontFamily: 'inherit',
   },
   row: { display: 'flex', gap: '1rem' },
+  roleGroup: { margin: '0.5rem 0' },
+  roleLabel: { fontWeight: 500, marginBottom: '0.5rem', display: 'block' },
+  roleOptions: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
+  roleOption: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    cursor: 'pointer',
+  },
   button: {
     backgroundColor: '#e63946',
     color: '#fff',
