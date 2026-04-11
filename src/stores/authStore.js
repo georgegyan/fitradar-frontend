@@ -51,6 +51,11 @@ const useAuthStore = create(
           return false;
         }
       },
+
+      isGymOwner: () => {
+        const state = get();
+        return state.user?.is_gym_owner == true;
+      },
     }),
     {
       name: 'auth-storage',
