@@ -31,12 +31,27 @@ button {
   font-family: inherit;
 }
 
+/* Improve tap targets on mobile */
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
+.home-container {
+  padding: 2rem 1rem;
+}
+
+/* Navbar links spacing */
+.nav-link {
+  padding: 0.5rem 0;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
+/* Leaflet map container */
 .leaflet-container {
   height: 500px;
   width: 100%;
@@ -44,29 +59,43 @@ button {
   z-index: 1;
 }
 
+/* ===== MOBILE RESPONSIVE STYLES ===== */
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
+    padding: 0 0.75rem;
   }
+  
   h1 {
     font-size: 1.8rem;
   }
+  
   .leaflet-container {
     height: 350px;
+    border-radius: 8px;
   }
 }
 
 @media (max-width: 480px) {
-  .navbar .container {
-    flex-direction: column;
-    gap: 0.5rem;
+  body {
+    font-size: 14px;
   }
-  .navbar .links {
-    flex-wrap: wrap;
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .leaflet-container {
+    height: 280px;
+  }
+}
+
+/* Navbar responsive */
+@media (max-width: 640px) {
+  .home-container {
+    padding: 1rem 0.75rem;
+  }
+  .navbar-links {
+    width: 100%;
     justify-content: center;
-  }
-  .gym-detail-header {
-    flex-direction: column;
-    align-items: flex-start;
   }
 }
