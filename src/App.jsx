@@ -7,6 +7,7 @@ import GymDetail from './pages/GymDetail';
 import MyBookings from './pages/MyBookings';
 import SubmitGym from './pages/SubmitGym';
 import useAuthStore from './stores/authStore';
+import OwnerDashboard from './pages/OwnerDashboard';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<ProtectedRoute><OwnerDashboard /></ProtectedRoute>} />
         <Route path="/gym/:id" element={<GymDetail />} />
         <Route path="/bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
         <Route path="/submit-gym" element={<ProtectedRoute><SubmitGym /></ProtectedRoute>} />
