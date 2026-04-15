@@ -46,6 +46,7 @@ export default function Home() {
 
   return (
     <div style={styles.container}>
+      <div className="home-container" style={styles.container}></div>
       <div style={styles.header}>
         <h1>Find Gyms Near You</h1>
         <p>Discover fitness centers and book sessions instantly</p>

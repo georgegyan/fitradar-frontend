@@ -36,7 +36,7 @@ const styles = {
   nav: {
     backgroundColor: '#ffffff',
     boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-    padding: '1rem 0',
+    padding: '0.75rem 0',
     position: 'sticky',
     top: 0,
     zIndex: 1000,
@@ -46,6 +46,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
+    gap: '0.5rem',
   },
   logo: {
     fontSize: '1.5rem',
@@ -55,13 +56,14 @@ const styles = {
   },
   links: {
     display: 'flex',
-    gap: '1.5rem',
+    gap: '1rem',
     alignItems: 'center',
     flexWrap: 'wrap',
   },
   user: {
     fontWeight: 500,
     color: '#2c3e50',
+    fontSize: '0.9rem',
   },
   logoutBtn: {
     background: 'none',
@@ -69,5 +71,6 @@ const styles = {
     color: '#e63946',
     fontWeight: 500,
     cursor: 'pointer',
+    fontSize: '0.9rem',
   },
 };
