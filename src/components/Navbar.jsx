@@ -17,7 +17,7 @@ export default function Navbar() {
             <>
               <Link to="/bookings">My Bookings</Link>
               {isGymOwner && <Link to="/submit-gym">Submit Gym</Link>}
-              <span style={styles.user}>👋 {user?.username}</span>
+              <span style={styles.user}> {user?.username}</span>
               <button onClick={logout} style={styles.logoutBtn}>Logout</button>
               {isGymOwner && <Link to="/dashboard">Dashboard</Link>}
             </>
