@@ -1,32 +1,33 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import GymDetail from './pages/GymDetail';
-import MyBookings from './pages/MyBookings';
-import SubmitGym from './pages/SubmitGym';
-import useAuthStore from './stores/authStore';
-import OwnerDashboard from './pages/OwnerDashboard';
-
-const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  return isAuthenticated ? children : <Navigate to="/login" />;
-};
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage';
+import BookingsPage from './pages/BookingsPage';
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<ProtectedRoute><OwnerDashboard /></ProtectedRoute>} />
-        <Route path="/gym/:id" element={<GymDetail />} />
-        <Route path="/bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
-        <Route path="/submit-gym" element={<ProtectedRoute><SubmitGym /></ProtectedRoute>} />
-      </Routes>
+      <nav className="bg-white shadow-md p-4 flex flex-wrap gap-4 justify-between items-center">
+        <div className="flex gap-4">
+          <Link to="/" className="text-blue-600 hover:underline">Home</Link>
+          <Link to="/bookings" className="text-blue-600 hover:underline">My Bookings</Link>
+          <Link to="/dashboard" className="text-blue-600 hover:underline">Dashboard</Link>
+        </div>
+        <div className="flex gap-4">
+          <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+          <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
+        </div>
+      </nav>
+      <main className="container mx-auto p-4">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/bookings" element={<BookingsPage />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   );
 }

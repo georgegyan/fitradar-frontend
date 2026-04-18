@@ -1,0 +1,161 @@
+/* Force all containers to be responsive */
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Responsive container class */
+.responsive-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Navbar specific overrides */
+@media (max-width: 768px) {
+  .navbar-wrapper {
+    padding: 0.5rem 0;
+  }
+  
+  .navbar-inner {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    text-align: center;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.75rem !important;
+  }
+  
+  .nav-links a, .nav-links button, .nav-links span {
+    font-size: 0.9rem;
+  }
+  
+  .logo {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* Mobile menu toggle */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  
+  .hamburger span {
+    width: 22px;
+    height: 2px;
+    display: block;
+    background: #1a1a2e;
+    border-radius: 999px;
+    margin: 3px 0;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    flex-direction: column !important;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 0 0 8px 8px;
+    display: none !important;
+    gap: 1rem !important;
+    align-items: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  
+  .nav-links.nav-links-open {
+    display: flex !important;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .navbar-inner {
+    position: relative;
+  }
+}
+
+/* Home page gym grid */
+@media (max-width: 768px) {
+  .gym-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+    gap: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .gym-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Gym detail page */
+@media (max-width: 768px) {
+  .gym-detail-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .gym-detail-header button {
+    width: 100%;
+  }
+  
+  .leaflet-container {
+    height: 300px !important;
+  }
+}
+
+/* Booking modal */
+@media (max-width: 640px) {
+  .booking-modal {
+    width: 95% !important;
+    margin: 0 auto !important;
+    padding: 1rem !important;
+  }
+  
+  .booking-modal .time-row {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* Dashboard grid */
+@media (max-width: 640px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Forms */
+@media (max-width: 640px) {
+  .form-card {
+    padding: 1.5rem !important;
+    margin: 1rem !important;
+  }
+  
+  .form-row {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  input, textarea, button {
+    font-size: 16px !important;
+  }
+}

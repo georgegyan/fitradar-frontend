@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import MapView from '../components/MapView';
 import BookingForm from '../components/BookingForm';
 import { getGymDetails } from '../services/gymService';
@@ -11,15 +11,13 @@ export default function GymDetail() {
   const [error, setError] = useState(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGym = async () => {
       try {
         const data = await getGymDetails(id);
         setGym(data);
-      } catch (err) {
-        console.error("Fetch error", err)
+      } catch {
         setError('Gym not found');
       } finally {
         setLoading(false);
@@ -31,16 +29,15 @@ export default function GymDetail() {
   const handleBookingSuccess = () => {
     setShowBookingForm(false);
     setBookingSuccess(true);
-    setTimeout(() => navigate('/bookings'), 2000);
+    setTimeout(() => setBookingSuccess(false), 3000);
   };
 
-  if (loading) return <div style={styles.centered}>Loading gym details...</div>;
-  if (error) return <div style={styles.centered}>{error}</div>;
+  if (loading) return <div className="responsive-container" style={styles.centered}>Loading gym details...</div>;
+  if (error) return <div className="responsive-container" style={styles.centered}>{error}</div>;
   if (!gym) return null;
 
   return (
-    <div style={styles.container}>
-      {/* Hero Image */}
+    <div className="responsive-container" style={styles.container}>
       {gym.cover_image && (
         <div style={styles.hero}>
           <img src={gym.cover_image} alt={gym.name} style={styles.heroImage} />
@@ -48,7 +45,7 @@ export default function GymDetail() {
       )}
 
       <div style={styles.content}>
-        <div style={styles.header}>
+        <div className="gym-detail-header" style={styles.header}>
           <h1>{gym.name}</h1>
           <button onClick={() => setShowBookingForm(true)} style={styles.bookButton}>
             Book a session
@@ -67,11 +64,7 @@ export default function GymDetail() {
         <div style={styles.mapSection}>
           <h3>Location</h3>
           {gym.latitude && gym.longitude ? (
-            <MapView
-              gyms={[gym]}
-              center={[gym.latitude, gym.longitude]}
-              zoom={15}
-            />
+            <MapView gyms={[gym]} center={[gym.latitude, gym.longitude]} zoom={15} />
           ) : (
             <p>Address: {gym.address}</p>
           )}
@@ -97,10 +90,10 @@ export default function GymDetail() {
 }
 
 const styles = {
-  container: { maxWidth: '1200px', margin: '0 auto', paddingBottom: '3rem' },
-  hero: { width: '100%', height: '300px', overflow: 'hidden' },
+  container: { paddingBottom: '3rem' },
+  hero: { width: '100%', height: '300px', overflow: 'hidden', marginTop: '1rem' },
   heroImage: { width: '100%', height: '100%', objectFit: 'cover' },
-  content: { padding: '1.5rem' },
+  content: { padding: '1rem 0' },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -134,5 +127,3 @@ const styles = {
     textAlign: 'center',
   },
 };
-
-// Mobile responsive adjustments via media query in index.css (we'll add)
