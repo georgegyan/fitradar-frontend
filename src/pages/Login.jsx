@@ -24,8 +24,8 @@ export default function Login() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
+    <div className="responsive-container" style={styles.container}>
+      <div className="form-card" style={styles.card}>
         <h1 style={styles.title}>Welcome Back</h1>
         <p style={styles.subtitle}>Login to discover gyms near you</p>
         {error && <div style={styles.error}>{error}</div>}
@@ -65,6 +65,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#f5f7fa',
+    padding: '2rem',
   },
   card: {
     backgroundColor: '#fff',
@@ -74,28 +75,16 @@ const styles = {
     maxWidth: '400px',
     boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
   },
-  title: {
-    fontSize: '1.8rem',
-    marginBottom: '0.5rem',
-    color: '#1a1a2e',
-  },
-  subtitle: {
-    color: '#64748b',
-    marginBottom: '1.5rem',
-  },
+  title: { fontSize: '1.8rem', marginBottom: '0.5rem', color: '#1a1a2e' },
+  subtitle: { color: '#64748b', marginBottom: '1.5rem' },
   error: {
     backgroundColor: '#fee2e2',
     color: '#dc2626',
     padding: '0.75rem',
     borderRadius: '8px',
     marginBottom: '1rem',
-    fontSize: '0.9rem',
   },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
+  form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
   input: {
     padding: '0.75rem 1rem',
     border: '1px solid #e2e8f0',
@@ -112,16 +101,7 @@ const styles = {
     fontSize: '1rem',
     fontWeight: 600,
     cursor: 'pointer',
-    transition: 'background 0.2s',
   },
-  footer: {
-    marginTop: '1.5rem',
-    textAlign: 'center',
-    color: '#64748b',
-  },
-  link: {
-    color: '#e63946',
-    textDecoration: 'none',
-    fontWeight: 500,
-  },
+  footer: { marginTop: '1.5rem', textAlign: 'center', color: '#64748b' },
+  link: { color: '#e63946', textDecoration: 'none', fontWeight: 500 },
 };

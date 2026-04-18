@@ -17,8 +17,7 @@ export default function MyBookings() {
     try {
       const data = await getUserBookings();
       setBookings(data.results || data);
-    } catch (err) {
-        console.error("Fetch error", err)
+    } catch {
       setError('Failed to load bookings');
     } finally {
       setLoading(false);
@@ -31,19 +30,18 @@ export default function MyBookings() {
     try {
       await cancelBooking(bookingId);
       await fetchBookings();
-    } catch (err) {
-        console.error("Fetch error", err)
+    } catch {
       alert('Failed to cancel');
     } finally {
       setCancelling(null);
     }
   };
 
-  if (loading) return <div style={styles.centered}>Loading bookings...</div>;
-  if (error) return <div style={styles.centered}>{error}</div>;
+  if (loading) return <div className="responsive-container" style={styles.centered}>Loading bookings...</div>;
+  if (error) return <div className="responsive-container" style={styles.centered}>{error}</div>;
 
   return (
-    <div style={styles.container}>
+    <div className="responsive-container" style={styles.container}>
       <h1>My Bookings</h1>
       {bookings.length === 0 ? (
         <div style={styles.empty}>
@@ -80,7 +78,7 @@ export default function MyBookings() {
 }
 
 const styles = {
-  container: { maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' },
+  container: { padding: '2rem 0' },
   centered: { textAlign: 'center', padding: '3rem' },
   empty: { textAlign: 'center', padding: '3rem', backgroundColor: '#fff', borderRadius: '12px' },
   link: { color: '#e63946', textDecoration: 'none', marginTop: '1rem', display: 'inline-block' },

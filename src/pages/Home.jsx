@@ -8,25 +8,10 @@ export default function Home() {
   const [gyms, setGyms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState({ lat: 40.7128, lng: -74.0060 }); // Default NYC
+  const [location, setLocation] = useState({ lat: 40.7128, lng: -74.0060 });
   const [locationDenied, setLocationDenied] = useState(false);
 
   useEffect(() => {
-    const fetchLocationAndGyms = async () => {
-      try {
-        const position = await getCurrentPosition();
-        const { latitude, longitude } = position.coords;
-        setLocation({ lat: latitude, lng: longitude });
-        setLocationDenied(false);
-        await fetchGyms(latitude, longitude);
-      } catch (err) {
-        console.error('Geolocation error:', err);
-        setLocationDenied(true);
-        // Still fetch gyms using default location
-        await fetchGyms(location.lat, location.lng);
-      }
-    };
-
     const fetchGyms = async (lat, lng) => {
       try {
         setLoading(true);
@@ -41,12 +26,25 @@ export default function Home() {
       }
     };
 
+    const fetchLocationAndGyms = async () => {
+      try {
+        const position = await getCurrentPosition();
+        const { latitude, longitude } = position.coords;
+        setLocation({ lat: latitude, lng: longitude });
+        setLocationDenied(false);
+        await fetchGyms(latitude, longitude);
+      } catch (err) {
+        console.error('Geolocation error:', err);
+        setLocationDenied(true);
+        await fetchGyms(location.lat, location.lng);
+      }
+    };
+
     fetchLocationAndGyms();
   }, [location.lat, location.lng]);
 
   return (
-    <div style={styles.container}>
-      <div className="home-container" style={styles.container}></div>
+    <div className="responsive-container" style={styles.container}>
       <div style={styles.header}>
         <h1>Find Gyms Near You</h1>
         <p>Discover fitness centers and book sessions instantly</p>
@@ -67,7 +65,7 @@ export default function Home() {
             <MapView gyms={gyms} center={[location.lat, location.lng]} zoom={13} />
             <div style={styles.gymList}>
               <h3>Nearby Gyms ({gyms.length})</h3>
-              <div style={styles.grid}>
+              <div className="gym-grid" style={styles.grid}>
                 {gyms.map((gym) => (
                   <Link to={`/gym/${gym.id}`} key={gym.id} style={styles.card}>
                     {gym.cover_image && (
@@ -92,9 +90,8 @@ export default function Home() {
 }
 
 const styles = {
-  container: { maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' },
+  container: { padding: '2rem 0' },
   header: { textAlign: 'center', marginBottom: '2rem' },
-  header_h1: { fontSize: '2.5rem', color: '#1a1a2e', marginBottom: '0.5rem' },
   warning: {
     backgroundColor: '#fef9c3',
     color: '#854d0e',

@@ -45,7 +45,7 @@ export default function BookingForm({ gymId, gymName, onSuccess, onClose }) {
 
   return (
     <div style={styles.overlay} onClick={onClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div className="booking-modal" style={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button style={styles.closeBtn} onClick={onClose}>×</button>
         <h3 style={styles.title}>Book a session at {gymName}</h3>
         <form onSubmit={handleSubmit}>
@@ -59,7 +59,7 @@ export default function BookingForm({ gymId, gymName, onSuccess, onClose }) {
               dateFormat="yyyy-MM-dd"
             />
           </div>
-          <div style={styles.row}>
+          <div className="time-row" style={styles.row}>
             <div style={styles.field}>
               <label>Start Time</label>
               <input

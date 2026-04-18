@@ -10,7 +10,7 @@ export default function Register() {
     password2: '',
     first_name: '',
     last_name: '',
-    is_gym_owner: false,   // <-- added role field
+    is_gym_owner: false,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -47,8 +47,8 @@ export default function Register() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
+    <div className="responsive-container" style={styles.container}>
+      <div className="form-card" style={styles.card}>
         <h1 style={styles.title}>Create Account</h1>
         <p style={styles.subtitle}>Join FitRadar to book or list gyms</p>
         {errors.general && <div style={styles.error}>{errors.general}</div>}
@@ -73,7 +73,7 @@ export default function Register() {
             style={styles.input}
           />
           {errors.email && <span style={styles.fieldError}>{errors.email}</span>}
-          <div style={styles.row}>
+          <div className="form-row" style={styles.row}>
             <input
               type="text"
               name="first_name"
@@ -112,7 +112,6 @@ export default function Register() {
           />
           {errors.password2 && <span style={styles.fieldError}>{errors.password2}</span>}
           
-          {/* Role Selection */}
           <div style={styles.roleGroup}>
             <label style={styles.roleLabel}>I want to:</label>
             <div style={styles.roleOptions}>
@@ -195,12 +194,7 @@ const styles = {
   roleGroup: { margin: '0.5rem 0' },
   roleLabel: { fontWeight: 500, marginBottom: '0.5rem', display: 'block' },
   roleOptions: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
-  roleOption: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    cursor: 'pointer',
-  },
+  roleOption: { display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' },
   button: {
     backgroundColor: '#e63946',
     color: '#fff',

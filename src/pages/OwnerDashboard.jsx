@@ -12,9 +12,11 @@ export default function OwnerDashboard() {
   useEffect(() => {
     const fetchMyGyms = async () => {
       try {
-        const response = await api.get('/gyms/'); // Get all gyms, then filter by owner? Better: backend endpoint.
-        // For MVP, we filter client-side. Later we can add /my-gyms endpoint.
-        const myGyms = response.data.filter(gym => gym.owner === user?.id);
+        const response = await api.get('/gyms/');
+        const myGyms = response.data.filter(gym => {
+          const ownerId = typeof gym.owner === 'object' ? gym.owner.id : gym.owner;
+          return ownerId === user?.id;
+        });
         setGyms(myGyms);
       } catch {
         setError('Failed to load your gyms');
@@ -25,22 +27,21 @@ export default function OwnerDashboard() {
     if (user) fetchMyGyms();
   }, [user]);
 
-  // Redirect if not gym owner
   if (user && !user.is_gym_owner) {
-    return <div style={styles.centered}>Access denied. Gym owners only.</div>;
+    return <div className="responsive-container" style={styles.centered}>Access denied. Gym owners only.</div>;
   }
 
-  if (loading) return <div style={styles.centered}>Loading...</div>;
-  if (error) return <div style={styles.centered}>{error}</div>;
+  if (loading) return <div className="responsive-container" style={styles.centered}>Loading...</div>;
+  if (error) return <div className="responsive-container" style={styles.centered}>{error}</div>;
 
   return (
-    <div style={styles.container}>
+    <div className="responsive-container" style={{ padding: '2rem 0' }}>
       <h1>My Gyms</h1>
       <Link to="/submit-gym" style={styles.addButton}>+ Add New Gym</Link>
       {gyms.length === 0 ? (
         <p>You haven't submitted any gyms yet.</p>
       ) : (
-        <div style={styles.grid}>
+        <div className="dashboard-grid" style={styles.grid}>
           {gyms.map(gym => (
             <div key={gym.id} style={styles.card}>
               <h3>{gym.name}</h3>
@@ -55,7 +56,6 @@ export default function OwnerDashboard() {
 }
 
 const styles = {
-  container: { maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' },
   centered: { textAlign: 'center', padding: '3rem' },
   addButton: {
     display: 'inline-block',
@@ -66,7 +66,11 @@ const styles = {
     marginBottom: '1.5rem',
     textDecoration: 'none',
   },
-  grid: { display: 'flex', flexDirection: 'column', gap: '1rem' },
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+    gap: '1rem',
+  },
   card: { backgroundColor: '#fff', borderRadius: '12px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' },
   viewLink: { color: '#e63946', textDecoration: 'none', marginTop: '0.5rem', display: 'inline-block' },
 };
