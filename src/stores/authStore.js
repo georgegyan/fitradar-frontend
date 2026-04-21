@@ -1,66 +1,72 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import api from '../services/api';
+import Cookies from 'js-cookie';
 
 const useAuthStore = create(
   persist(
     (set, get) => ({
       user: null,
-      accessToken: null,
-      isAuthenticated: false,
+      isLoading: false,
+      error: null,
 
-      login: async (username, password) => {
-        try {
-          const response = await api.post('/auth/login/', { username, password });
-          const { access, refresh, user } = response.data;
-          set({
-            user,
-            accessToken: access,
-            isAuthenticated: true,
-          });
-          localStorage.setItem('refreshToken', refresh);
-          return { success: true };
-        } catch (error) {
-          return { success: false, error: error.response?.data?.detail || 'Login failed' };
-        }
-      },
+      // Get CSRF token from cookies (set by Django)
+      getCsrfToken: () => Cookies.get('csrftoken'),
 
+      // Register
       register: async (userData) => {
+        set({ isLoading: true, error: null });
         try {
-          await api.post('/auth/register/', userData);
-          return { success: true };
+          const response = await api.post('/users/register/', userData);
+          // After registration, automatically log in
+          await get().login({
+            username: userData.username,
+            password: userData.password,
+          });
+          return response.data;
         } catch (error) {
-          return { success: false, error: error.response?.data || 'Registration failed' };
+          const errorMsg = error.response?.data || { error: 'Registration failed' };
+          set({ error: errorMsg, isLoading: false });
+          throw errorMsg;
         }
       },
 
-      logout: () => {
-        set({ user: null, accessToken: null, isAuthenticated: false });
-        localStorage.removeItem('refreshToken');
-      },
-
-      refreshAccessToken: async () => {
-        const refresh = localStorage.getItem('refreshToken');
-        if (!refresh) return false;
+      // Login
+      login: async (credentials) => {
+        set({ isLoading: true, error: null });
         try {
-          const response = await api.post('/auth/token/refresh/', { refresh });
-          set({ accessToken: response.data.access });
-          return true;
-        } catch {
-          get().logout();
-          return false;
+          // Ensure CSRF token is sent (Django requires it)
+          const csrfToken = get().getCsrfToken();
+          const response = await api.post('/users/login/', credentials, {
+            headers: { 'X-CSRFToken': csrfToken },
+          });
+          set({ user: response.data, isLoading: false, error: null });
+          return response.data;
+        } catch (error) {
+          const errorMsg = error.response?.data || { error: 'Login failed' };
+          set({ error: errorMsg, isLoading: false });
+          throw errorMsg;
         }
       },
 
-      isGymOwner: () => {
-        const state = get();
-        return state.user?.is_gym_owner == true;
+      // Logout
+      logout: async () => {
+        set({ isLoading: true });
+        try {
+          await api.post('/users/logout/');
+          set({ user: null, isLoading: false, error: null });
+        } catch (error) {
+          console.error('Logout error', error);
+          set({ user: null, isLoading: false }); // force clear
+        }
       },
+
+      // Check if user is gym owner
+      isGymOwner: () => get().user?.is_gym_owner === true,
     }),
     {
-      name: 'auth-storage',
+      name: 'auth-storage', // localStorage key
       getStorage: () => localStorage,
-      partialize: (state) => ({ user: state.user, accessToken: state.accessToken, isAuthenticated: state.isAuthenticated }),
     }
   )
 );
